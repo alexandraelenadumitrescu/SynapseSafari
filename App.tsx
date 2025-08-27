@@ -5,41 +5,40 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+export default App;
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import HomeScreen from './screens/HomeScreen';
+import GamesScreen from './screens/GamesScreen';
+import QuizScreen from './screens/QuizScreen';
+import SpeechAnalysisScreen from './screens/SpeechAnalysisScreen';
+import AIAssistantScreen from './screens/AIAssistantScreen';
+import ResourcesScreen from './screens/ResourcesScreen';
+import AlzheimerDetectorScreen from './screens/AlzheimerDetectorScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignUpScreen from './screens/SignUpScreen';
+
+
+
+const Drawer = createDrawerNavigator();
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Games" component={GamesScreen} />
+        <Drawer.Screen name="Quiz" component={QuizScreen} />
+        <Drawer.Screen name="Speech Analysis" component={SpeechAnalysisScreen} />
+        <Drawer.Screen name="AI Assistant" component={AIAssistantScreen} />
+        <Drawer.Screen name="Resources" component={ResourcesScreen} />
+        <Drawer.Screen name="Alzheimer Detector" component={AlzheimerDetectorScreen} />
+        <Drawer.Screen name="Log In" component={LoginScreen} />
+        <Drawer.Screen name="Sign Up" component={SignUpScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
 
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;

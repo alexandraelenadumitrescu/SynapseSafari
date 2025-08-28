@@ -39,49 +39,161 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={editing ? pickImage : undefined}>
-        {photo ? (
-          <Image
-            source={{ uri: photo }}
-            style={styles.avatar}
+      <View style={styles.card}>
+        <TouchableOpacity onPress={editing ? pickImage : undefined} style={styles.avatarWrapper} activeOpacity={editing ? 0.7 : 1}>
+          {photo ? (
+            <Image
+              source={{ uri: photo }}
+              style={styles.avatar}
+            />
+          ) : (
+            <View style={[styles.avatar, styles.avatarPlaceholder]}>
+              <Text style={styles.avatarInitial}>
+                {user.name ? user.name[0].toUpperCase() : '?'}
+              </Text>
+            </View>
+          )}
+          {editing && <Text style={styles.editPhotoText}>Change photo</Text>}
+        </TouchableOpacity>
+        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.email}>{user.email}</Text>
+        {editing ? (
+          <TextInput
+            style={styles.bioInput}
+            value={bio}
+            onChangeText={setBio}
+            placeholder="Your bio"
+            multiline
           />
         ) : (
-          <View style={[styles.avatar, styles.avatarPlaceholder]}>
-            <Text style={styles.avatarInitial}>
-              {user.name ? user.name[0].toUpperCase() : '?'}
-            </Text>
-          </View>
+          <Text style={styles.bio}>{user.bio || 'No bio yet.'}</Text>
         )}
-      </TouchableOpacity>
-      <Text style={styles.name}>{user.name}</Text>
-      <Text style={styles.email}>{user.email}</Text>
-      {editing ? (
-        <TextInput
-          style={styles.bioInput}
-          value={bio}
-          onChangeText={setBio}
-          placeholder="Your bio"
-        />
-      ) : (
-        <Text style={styles.bio}>{user.bio || 'No bio yet.'}</Text>
-      )}
-      {editing ? (
-        <Button title="Save" onPress={handleSave} />
-      ) : (
-        <Button title="Edit Profile" onPress={() => setEditing(true)} />
-      )}
-      <Button title="Log Out" color="#d33" onPress={logout} />
+        <View style={styles.buttonRow}>
+          {editing ? (
+            <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={[styles.button, styles.editButton]} onPress={() => setEditing(true)}>
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={logout}>
+            <Text style={[styles.buttonText, { color: '#fff' }]}>Log Out</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', padding: 24, backgroundColor: '#fff' },
-  avatar: { width: 100, height: 100, borderRadius: 50, marginBottom: 16, backgroundColor: '#eee' },
-  avatarPlaceholder: { justifyContent: 'center', alignItems: 'center' },
-  avatarInitial: { fontSize: 40, color: '#bbb', fontWeight: 'bold' },
-  name: { fontSize: 24, fontWeight: 'bold', marginBottom: 4 },
-  email: { fontSize: 16, color: '#888', marginBottom: 16 },
-  bio: { fontSize: 16, color: '#444', marginBottom: 16, textAlign: 'center' },
-  bioInput: { width: 250, height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, marginBottom: 16, paddingHorizontal: 8 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f3f6fa',
+  },
+  card: {
+    width: 320,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  avatarWrapper: {
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  avatar: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: '#e0e7ef',
+    marginBottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  avatarPlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarInitial: {
+    fontSize: 44,
+    color: '#b0b8c1',
+    fontWeight: 'bold',
+  },
+  editPhotoText: {
+    fontSize: 12,
+    color: '#2d7be5',
+    marginTop: 6,
+  },
+  name: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 2,
+    color: '#2d7be5',
+  },
+  email: {
+    fontSize: 15,
+    color: '#888',
+    marginBottom: 14,
+  },
+  bio: {
+    fontSize: 16,
+    color: '#444',
+    marginBottom: 18,
+    textAlign: 'center',
+    minHeight: 24,
+  },
+  bioInput: {
+    width: 250,
+    minHeight: 40,
+    borderColor: '#c7d0e0',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 18,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    backgroundColor: '#f8fafc',
+    color: '#222',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 8,
+    gap: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginHorizontal: 2,
+  },
+  saveButton: {
+    backgroundColor: '#2d7be5',
+  },
+  editButton: {
+    backgroundColor: '#e0e7ef',
+  },
+  logoutButton: {
+    backgroundColor: '#d33',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2d7be5',
+  },
 });

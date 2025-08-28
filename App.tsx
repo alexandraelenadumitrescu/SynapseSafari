@@ -10,7 +10,7 @@ export default App;
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerContentComponentProps } from '@react-navigation/drawer';
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import GamesScreen from './screens/GamesScreen';
 import QuizScreen from './screens/QuizScreen';
@@ -21,7 +21,39 @@ import AlzheimerDetectorScreen from './screens/AlzheimerDetectorScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import { UserProvider } from './context/UserContext';
+import { UserProvider, useUser } from './context/UserContext';
+function ProfileAvatar({ navigation }: { navigation: any }) {
+  const { user } = useUser();
+  return (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Profile')}
+      style={{ marginRight: 16 }}
+      accessibilityLabel="Profile"
+    >
+      {user?.photo ? (
+        <Image
+          source={{ uri: user.photo }}
+          style={{ width: 38, height: 38, borderRadius: 19, borderWidth: 1, borderColor: '#2d7be5', backgroundColor: '#eee' }}
+        />
+      ) : (
+        <View style={{
+          width: 38,
+          height: 38,
+          borderRadius: 19,
+          backgroundColor: '#e0e7ef',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+          borderColor: '#2d7be5',
+        }}>
+          <Text style={{ fontSize: 20, color: '#2d7be5', fontWeight: 'bold' }}>
+            {user?.name ? user.name[0].toUpperCase() : '?'}
+          </Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+}
 
 
 
@@ -46,7 +78,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 
 
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+
 
 function HamburgerMenu({ navigation }: { navigation: any }) {
   return (
@@ -77,6 +109,7 @@ function App() {
                 />
               </View>
             ),
+            headerRight: () => <ProfileAvatar navigation={navigation} />, // avatar in right corner
             headerStyle: { backgroundColor: '#fff', elevation: 0, shadowOpacity: 0 },
           })}
         >

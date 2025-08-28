@@ -7,6 +7,7 @@
 
 export default App;
 
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from './screens/HomeScreen';
@@ -18,6 +19,8 @@ import ResourcesScreen from './screens/ResourcesScreen';
 import AlzheimerDetectorScreen from './screens/AlzheimerDetectorScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import { UserProvider } from './context/UserContext';
 
 
 
@@ -25,19 +28,22 @@ const Drawer = createDrawerNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Games" component={GamesScreen} />
-        <Drawer.Screen name="Quiz" component={QuizScreen} />
-        <Drawer.Screen name="Speech Analysis" component={SpeechAnalysisScreen} />
-        <Drawer.Screen name="AI Assistant" component={AIAssistantScreen} />
-        <Drawer.Screen name="Resources" component={ResourcesScreen} />
-        <Drawer.Screen name="Alzheimer Detector" component={AlzheimerDetectorScreen} />
-        <Drawer.Screen name="Log In" component={LoginScreen} />
-        <Drawer.Screen name="Sign Up" component={SignUpScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="Games" component={GamesScreen} />
+          <Drawer.Screen name="Quiz" component={QuizScreen} />
+          <Drawer.Screen name="Speech Analysis" component={SpeechAnalysisScreen} />
+          <Drawer.Screen name="AI Assistant" component={AIAssistantScreen} />
+          <Drawer.Screen name="Resources" component={ResourcesScreen} />
+          <Drawer.Screen name="Alzheimer Detector" component={AlzheimerDetectorScreen} />
+          <Drawer.Screen name="Profile" component={ProfileScreen} />
+          <Drawer.Screen name="Log In" component={LoginScreen} />
+          <Drawer.Screen name="Sign Up" component={SignUpScreen} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
 

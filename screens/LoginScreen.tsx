@@ -1,20 +1,30 @@
 
+
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useUser } from '../context/UserContext';
 
 type LoginScreenProps = {
   navigation: DrawerNavigationProp<any>;
 };
 
+
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useUser();
 
-  const handleLogin = () => {
-    // TODO: Add real authentication logic
-    if (email && password) {
-      navigation.navigate('Home');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter email and password.');
+      return;
+    }
+    const ok = await login(email, password);
+    if (ok) {
+      navigation.navigate('Profile');
+    } else {
+      Alert.alert('Login failed', 'Invalid credentials.');
     }
   };
 
@@ -36,8 +46,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Log In" onPress={handleLogin} />
-      <Text style={styles.link} onPress={() => navigation.navigate('Sign Up')}>Don't have an account? Sign Up</Text>
+  <Button title="Log In" onPress={handleLogin} />
+  <Text style={styles.link} onPress={() => navigation.navigate('Sign Up')}>Don't have an account? Sign Up</Text>
     </View>
   );
 }

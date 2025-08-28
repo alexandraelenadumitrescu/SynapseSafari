@@ -42,7 +42,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signup = async (newUser: User) => {
     await AsyncStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
+    setUser(null); // force login after sign up
     return true;
   };
 

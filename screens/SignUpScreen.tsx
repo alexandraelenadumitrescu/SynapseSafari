@@ -23,7 +23,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
     }
     const ok = await signup({ name, email, password });
     if (ok) {
-      navigation.navigate('Profile');
+      navigation.navigate('Log In');
     } else {
       Alert.alert('Sign up failed', 'Could not create account.');
     }

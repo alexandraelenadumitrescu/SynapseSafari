@@ -9,11 +9,10 @@ type LoginScreenProps = {
   navigation: DrawerNavigationProp<any>;
 };
 
-
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useUser();
+  const { user, login, logout } = useUser();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -21,13 +20,19 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       return;
     }
     const ok = await login(email, password);
-    if (ok) {
-      navigation.navigate('Profile');
-    } else {
+    if (!ok) {
       Alert.alert('Login failed', 'Invalid credentials.');
     }
   };
 
+  if (user) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>You are logged in</Text>
+        <Button title="Log Out" color="#d33" onPress={logout} />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log In</Text>
@@ -46,11 +51,12 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         onChangeText={setPassword}
         secureTextEntry
       />
-  <Button title="Log In" onPress={handleLogin} />
-  <Text style={styles.link} onPress={() => navigation.navigate('Sign Up')}>Don't have an account? Sign Up</Text>
+      <Button title="Log In" onPress={handleLogin} />
+      <Text style={styles.link} onPress={() => navigation.navigate('Sign Up')}>Don't have an account? Sign Up</Text>
     </View>
   );
 }
+// ...existing code...
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
